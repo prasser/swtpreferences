@@ -29,6 +29,10 @@ public class PreferencesDialogConfiguration {
     private String no                = "No";
     /** String*/
     private String ok                = "OK";
+    /** String*/
+    private String undo              = "Undo changes";
+    /** String*/
+    private String _default          = "Set to default";
 
     /**
      * Returns the minimal height of a multi-line text field
@@ -69,6 +73,22 @@ public class PreferencesDialogConfiguration {
     }
 
     /**
+     * Returns the string for "default"
+     * @return
+     */
+    public String getStringDefault() {
+        return this._default;
+    }
+
+    /**
+     * Returns the string for "undo"
+     * @return
+     */
+    public String getStringUndo() {
+        return this.undo;
+    }
+
+    /**
      * Sets the minimal height of a multi-line text field
      */
     public void setMinimalTextHeight(int minimalTextHeight) {
@@ -106,6 +126,22 @@ public class PreferencesDialogConfiguration {
     public void setStringYes(String yes) {
         checkNull(yes);
         this.yes = yes;
+    }
+
+    /**
+     * Sets the string for "default"
+     */
+    public void setStringDefault(String _default) {
+        checkNull(_default);
+        this._default = _default;
+    }
+
+    /**
+     * Sets the string for "undo"
+     */
+    public void setStringUndo(String undo) {
+        checkNull(undo);
+        this.undo = undo;
     }
 
     /**

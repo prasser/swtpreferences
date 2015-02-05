@@ -36,8 +36,8 @@ class EditorInteger extends Editor<Integer> {
      * Constructor
      * @param dialog
      */
-    public EditorInteger(PreferencesDialog dialog) {
-        super(dialog, null);
+    public EditorInteger(PreferencesDialog dialog, Integer _default) {
+        super(dialog, null, _default);
     }
 
     /**
@@ -45,8 +45,8 @@ class EditorInteger extends Editor<Integer> {
      * @param dialog
      * @param validator
      */
-    public EditorInteger(PreferencesDialog dialog, Validator<Integer> validator) {
-        super(dialog, validator);
+    public EditorInteger(PreferencesDialog dialog, Validator<Integer> validator, Integer _default) {
+        super(dialog, validator, _default);
     }
 
     @Override
@@ -83,6 +83,10 @@ class EditorInteger extends Editor<Integer> {
                 red.dispose();
             }
         });
+        
+        super.createUndoButton(parent);
+        super.createDefaultButton(parent);
+        super.update();
     }
 
     @Override
@@ -104,5 +108,6 @@ class EditorInteger extends Editor<Integer> {
     void setValue(Object t) {
         this.setInitialValue((Integer) t);
         this.text.setText(t.toString());
+        super.update();
     }
 }

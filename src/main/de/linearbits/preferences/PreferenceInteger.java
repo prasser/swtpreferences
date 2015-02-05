@@ -39,10 +39,21 @@ public abstract class PreferenceInteger extends Preference<Integer> {
         super(label);
         this.validator = new ValidatorInteger(min, max);
     }
-
+    /**
+     * Constructor
+     * @param label
+     * @param min
+     * @param max
+     * @param default
+     */
+    public PreferenceInteger(String label, int min, int max, int _default) {
+        super(label, _default);
+        this.validator = new ValidatorInteger(min, max);
+    }
+    
     @Override
     protected Editor<Integer> getEditor() {
-        return new EditorInteger(getDialog(), getValidator());
+        return new EditorInteger(getDialog(), getValidator(), getDefault());
     }
 
     @Override

@@ -36,8 +36,8 @@ class EditorDouble extends Editor<Double> {
      * Constructor
      * @param dialog
      */
-    public EditorDouble(PreferencesDialog dialog) {
-        super(dialog, null);
+    public EditorDouble(PreferencesDialog dialog, Double _default) {
+        super(dialog, null, _default);
     }
 
     /** 
@@ -45,8 +45,8 @@ class EditorDouble extends Editor<Double> {
      * @param dialog
      * @param validator
      */
-    public EditorDouble(PreferencesDialog dialog, Validator<Double> validator) {
-        super(dialog, validator);
+    public EditorDouble(PreferencesDialog dialog, Validator<Double> validator, Double _default) {
+        super(dialog, validator, _default);
     }
 
     @Override
@@ -83,6 +83,10 @@ class EditorDouble extends Editor<Double> {
                 red.dispose();
             }
         });
+        
+        super.createUndoButton(parent);
+        super.createDefaultButton(parent);
+        super.update();
     }
 
     @Override
@@ -104,5 +108,6 @@ class EditorDouble extends Editor<Double> {
     void setValue(Object t) {
         this.setInitialValue((Double) t);
         this.text.setText(t.toString());
+        super.update();
     }
 }

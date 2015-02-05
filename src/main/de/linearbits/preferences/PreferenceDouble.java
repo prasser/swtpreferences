@@ -40,9 +40,21 @@ public abstract class PreferenceDouble extends Preference<Double> {
         this.validator = new ValidatorDouble(min, max);
     }
 
+    /**
+     * Constructor
+     * @param label
+     * @param min
+     * @param max
+     * @param default
+     */
+    public PreferenceDouble(String label, double min, double max, double _default) {
+        super(label, _default);
+        this.validator = new ValidatorDouble(min, max);
+    }
+
     @Override
     protected Editor<Double> getEditor() {
-        return new EditorDouble(getDialog(), getValidator());
+        return new EditorDouble(getDialog(), getValidator(), getDefault());
     }
 
     @Override

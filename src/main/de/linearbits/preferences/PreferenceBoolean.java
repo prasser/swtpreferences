@@ -21,6 +21,15 @@ public abstract class PreferenceBoolean extends Preference<Boolean> {
     /**
      * Constructor
      * @param label
+     * @param default
+     */
+    public PreferenceBoolean(String label, Boolean _default) {
+        super(label, _default);
+    }
+    
+    /**
+     * Constructor
+     * @param label
      */
     public PreferenceBoolean(String label) {
         super(label);
@@ -28,7 +37,7 @@ public abstract class PreferenceBoolean extends Preference<Boolean> {
 
     @Override
     protected Editor<Boolean> getEditor() {
-        return new EditorBoolean(getDialog());
+        return new EditorBoolean(getDialog(), getDefault());
     }
 
     @Override

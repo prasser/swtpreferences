@@ -21,6 +21,15 @@ public abstract class PreferenceCharacter extends Preference<String> {
     /**
      * Constructor
      * @param label
+     * @param default
+     */
+    public PreferenceCharacter(String label, char _default) {
+        super(label, String.valueOf(_default));
+    }
+    
+    /**
+     * Constructor
+     * @param label
      */
     public PreferenceCharacter(String label) {
         super(label);
@@ -28,7 +37,7 @@ public abstract class PreferenceCharacter extends Preference<String> {
 
     @Override
     protected Editor<String> getEditor() {
-        return new EditorString(getDialog(), getValidator());
+        return new EditorString(getDialog(), getValidator(), getDefault());
     }
 
     @Override

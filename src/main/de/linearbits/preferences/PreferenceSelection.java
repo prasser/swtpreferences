@@ -25,6 +25,18 @@ public abstract class PreferenceSelection extends Preference<String> {
      * Constructor
      * @param label
      * @param elements
+     * @param default
+     */
+    public PreferenceSelection(String label, String[] elements, String _default) {
+        super(label, _default);
+        this.elements = elements;
+        if (elements == null || elements.length == 0) { throw new IllegalArgumentException("Elements must not be empty"); }
+    }
+
+    /**
+     * Constructor
+     * @param label
+     * @param elements
      */
     public PreferenceSelection(String label, String[] elements) {
         super(label);
@@ -34,7 +46,7 @@ public abstract class PreferenceSelection extends Preference<String> {
 
     @Override
     protected Editor<String> getEditor() {
-        return new EditorSelection(getDialog(), elements);
+        return new EditorSelection(getDialog(), elements, getDefault());
     }
 
     @Override

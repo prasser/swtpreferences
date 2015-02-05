@@ -12,6 +12,11 @@
 
 package de.linearbits.preferences;
 
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -25,6 +30,9 @@ abstract class Editor<T> {
     /** Validator*/
     private Validator<T>      validator    = null;
 
+    /** Model*/
+    private T                 _default      = null;
+
     /** Dialog*/
     private PreferencesDialog dialog       = null;
 
@@ -32,14 +40,21 @@ abstract class Editor<T> {
     private T                 initialValue = null;
 
     /** Is valid*/
-    private boolean           valid        = true;
+    private boolean           valid         = true;
 
+    /** View*/
+    private Button            buttonUndo    = null;
+
+    /** View*/
+    private Button            buttonDefault = null;
+    
     /**
      * Constructor
      */
-    public Editor(PreferencesDialog dialog, Validator<T> validator) {
+    public Editor(PreferencesDialog dialog, Validator<T> validator, T _default) {
         this.validator = validator;
         this.dialog = dialog;
+        this._default = _default;
     }
 
     /**
@@ -150,5 +165,41 @@ abstract class Editor<T> {
      */
     void update() {
         dialog.update();
+        buttonUndo.setEnabled(isDirty() && getInitialValue()!=null);
+        buttonDefault.setEnabled(_default != null && !getValue().equals(_default));
+    }
+    
+    /**
+     * Creates a button
+     * @param parent
+     */
+    void createUndoButton(Composite parent) {
+        buttonUndo = new Button(parent, SWT.PUSH);
+        buttonUndo.setImage(Resources.getImageUndo());
+        buttonUndo.setLayoutData(GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.TOP).create());
+        buttonUndo.setToolTipText(dialog.getConfiguration().getStringUndo());
+        buttonUndo.addSelectionListener(new SelectionAdapter(){
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                setValue(getInitialValue());
+            }
+        });
+    }
+    
+    /**
+     * Creates a button
+     * @param parent
+     */
+    void createDefaultButton(Composite parent) {
+        buttonDefault = new Button(parent, SWT.PUSH);
+        buttonDefault.setImage(Resources.getImageDefault());
+        buttonDefault.setLayoutData(GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.TOP).create());
+        buttonDefault.setToolTipText(dialog.getConfiguration().getStringDefault());
+        buttonDefault.addSelectionListener(new SelectionAdapter(){
+            @Override
+            public void widgetSelected(SelectionEvent arg0) {
+                setValue(_default);
+            }
+        });
     }
 }

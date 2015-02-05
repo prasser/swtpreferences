@@ -36,8 +36,8 @@ class EditorSelection extends Editor<String> {
      * @param dialog
      * @param elems
      */
-    public EditorSelection(PreferencesDialog dialog, String[] elems) {
-        super(dialog, null);
+    public EditorSelection(PreferencesDialog dialog, String[] elems, String _default) {
+        super(dialog, null, _default);
         this.elems = elems;
     }
 
@@ -69,6 +69,10 @@ class EditorSelection extends Editor<String> {
                 update();
             }
         });
+        
+        super.createUndoButton(parent);
+        super.createDefaultButton(parent);
+        super.update();
     }
 
     @Override
@@ -90,5 +94,6 @@ class EditorSelection extends Editor<String> {
     void setValue(Object t) {
         this.setInitialValue((String) t);
         combo.select(indexOf((String) t));
+        super.update();
     }
 }

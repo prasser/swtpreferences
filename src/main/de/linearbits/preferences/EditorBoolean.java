@@ -32,8 +32,8 @@ class EditorBoolean extends Editor<Boolean> {
      * Constructor
      * @param dialog
      */
-    public EditorBoolean(PreferencesDialog dialog) {
-        super(dialog, null);
+    public EditorBoolean(PreferencesDialog dialog, Boolean _default) {
+        super(dialog, null, _default);
     }
 
     @Override
@@ -54,6 +54,10 @@ class EditorBoolean extends Editor<Boolean> {
                 }
             }
         });
+        
+        super.createUndoButton(parent);
+        super.createDefaultButton(parent);
+        super.update();
     }
 
     @Override
@@ -80,5 +84,6 @@ class EditorBoolean extends Editor<Boolean> {
         setInitialValue((Boolean) t);
         checkbox.setSelection((Boolean) t);
         checkbox.setText((Boolean) t ? getDialog().getConfiguration().getStringYes() : getDialog().getConfiguration().getStringNo());
+        super.update();
     }
 }

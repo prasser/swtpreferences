@@ -36,8 +36,8 @@ class EditorString extends Editor<String> {
      * Constructor
      * @param dialog
      */
-    public EditorString(PreferencesDialog dialog) {
-        super(dialog, null);
+    public EditorString(PreferencesDialog dialog, String _default) {
+        super(dialog, null, _default);
     }
 
     /**
@@ -45,8 +45,8 @@ class EditorString extends Editor<String> {
      * @param dialog
      * @param validator
      */
-    public EditorString(PreferencesDialog dialog, Validator<String> validator) {
-        super(dialog, validator);
+    public EditorString(PreferencesDialog dialog, Validator<String> validator, String _default) {
+        super(dialog, validator, _default);
     }
 
     @Override
@@ -83,6 +83,10 @@ class EditorString extends Editor<String> {
                 red.dispose();
             }
         });
+        
+        super.createUndoButton(parent);
+        super.createDefaultButton(parent);
+        super.update();
     }
 
     @Override
@@ -104,5 +108,6 @@ class EditorString extends Editor<String> {
     void setValue(Object t) {
         this.setInitialValue((String) t);
         this.text.setText((String) t);
+        super.update();
     }
 }

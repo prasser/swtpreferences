@@ -33,8 +33,8 @@ class EditorText extends Editor<String> {
      * Constructor
      * @param dialog
      */
-    public EditorText(PreferencesDialog dialog) {
-        super(dialog, null);
+    public EditorText(PreferencesDialog dialog, String _default) {
+        super(dialog, null, _default);
     }
 
     @Override
@@ -53,6 +53,10 @@ class EditorText extends Editor<String> {
                 update();
             }
         });
+        
+        super.createUndoButton(parent);
+        super.createDefaultButton(parent);
+        super.update();
     }
 
     @Override
@@ -74,5 +78,6 @@ class EditorText extends Editor<String> {
     void setValue(Object t) {
         this.setInitialValue((String) t);
         this.text.setText((String) t);
+        super.update();
     }
 }

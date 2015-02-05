@@ -24,7 +24,19 @@ abstract class Preference<T> {
     private String            label;
     /** Dialog*/
     private PreferencesDialog dialog;
+    /** Default*/
+    private T                 _default = null;
 
+    /**
+     * Constructor
+     * @param _default
+     * @param label
+     */
+    Preference(String label, T _default) {
+        this(label);
+        this._default = _default;
+    }
+    
     /** 
      * Constructor
      * @param label
@@ -80,5 +92,13 @@ abstract class Preference<T> {
      */
     void setDialog(PreferencesDialog dialog) {
         this.dialog = dialog;
+    }
+    
+    /**
+     * Returns the default value, if any
+     * @return
+     */
+    T getDefault() {
+        return _default;
     }
 }

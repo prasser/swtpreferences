@@ -153,7 +153,7 @@ public class PreferencesDialog extends TitleAreaDialog {
      */
     private Composite createCategory(TabFolder folder, String category, List<Preference<?>> preferences) {
         final Composite c = new Composite(folder, SWT.NONE);
-        c.setLayout(new GridLayout(2, false));
+        c.setLayout(new GridLayout(4, false));
         for (final Preference<?> e : preferences) {
             final Label l = new Label(c, SWT.NONE);
             l.setText(e.getLabel() + ":"); //$NON-NLS-1$
@@ -217,14 +217,20 @@ public class PreferencesDialog extends TitleAreaDialog {
      * Updates the OK button
      */
     void update() {
+        
+        boolean dirty = false;
         for (Entry<String, List<Preference<?>>> entry : preferences.entrySet()) {
             for (Preference<?> preference : entry.getValue()) {
-                if (editors.containsKey(preference) && !editors.get(preference).isValid()) {
-                    ok.setEnabled(false);
-                    return;
+                Editor<?> editor = editors.get(preference);
+                if (editor != null) {
+                    if (!editor.isValid()) {
+                        ok.setEnabled(false);
+                        return;
+                    }
+                    dirty |= editor.isDirty();
                 }
             }
         }
-        ok.setEnabled(true);
+        ok.setEnabled(dirty);
     }
 }

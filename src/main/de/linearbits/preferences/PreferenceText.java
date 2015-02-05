@@ -26,9 +26,18 @@ public abstract class PreferenceText extends Preference<String> {
         super(label);
     }
 
+    /**
+     * Constructor
+     * @param label
+     * @param default
+     */
+    public PreferenceText(String label, String _default) {
+        super(label, _default);
+    }
+
     @Override
     protected Editor<String> getEditor() {
-        return new EditorText(getDialog());
+        return new EditorText(getDialog(), getDefault());
     }
 
     @Override
