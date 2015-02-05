@@ -166,7 +166,11 @@ abstract class Editor<T> {
     void update() {
         dialog.update();
         buttonUndo.setEnabled(isDirty() && getInitialValue()!=null);
-        buttonDefault.setEnabled(_default != null && !getValue().equals(_default));
+        try {
+            buttonDefault.setEnabled(_default != null && !getValue().equals(_default));
+        } catch (Exception e){
+            buttonDefault.setEnabled(false);
+        }
     }
     
     /**

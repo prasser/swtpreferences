@@ -49,6 +49,11 @@
     </target>
 
     <target name="compile" depends="prepare" description="compile the source ">
+    	 <copy todir="build/de/linearbits/preferences" overwrite="true">
+    	            <fileset dir="src/main/de/linearbits/preferences" defaultexcludes="yes">
+    	                <exclude name="**/*.java" />
+    	            </fileset>
+    	        </copy>
         <javac srcdir="src/main" destdir="build" source="1.7">
             <classpath>
                 <path path="src/main" />
