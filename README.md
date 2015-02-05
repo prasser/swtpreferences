@@ -53,7 +53,7 @@ Dependencies
 ------
 
 SWT Preferences depends on SWT (obviously) and JFace. The versions used to build the binaries provided on
-this page can be found [here](https://github.com/prasser/swtpreferences/master/lib/).
+this page can be found [here](https://github.com/prasser/swtpreferences/tree/master/lib).
 
 Documentation
 ------
