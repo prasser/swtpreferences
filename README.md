@@ -11,9 +11,10 @@ Features
 
 1. Simple and easy to use API
 2. Editors for boolean, numeric, textual and set-valued properties
-3. Validators
-4. Only writes back data that has actually been changed in the dialog
-5. Supports internationalization via a configuration object
+3. Provides configurable validators
+4. Supports undo and default values
+5. Only writes back data that has actually been changed in the dialog
+6. Supports internationalization via a configuration object
 
 [![Screenshot](https://raw.github.com/prasser/swtpreferences/master/media/screenshot.png)](https://raw.github.com/prasser/swtpreferences/master/media/screenshot.png)
 
