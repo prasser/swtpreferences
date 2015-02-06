@@ -116,6 +116,7 @@ abstract class Editor<T> {
      */
     boolean isDirty() {
         if (getInitialValue() == null) return false;
+        else if (!isValid()) return true;
         else return !getInitialValue().equals(getValue());
     }
 
