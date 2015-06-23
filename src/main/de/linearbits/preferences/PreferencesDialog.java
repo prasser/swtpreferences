@@ -22,12 +22,16 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -140,7 +144,7 @@ public class PreferencesDialog extends TitleAreaDialog {
             final Composite tabC = createCategory(folder, category, preferences.get(category));
             tab.setControl(tabC);
         }
-
+        
         // Pack the dialog
         super.getShell().pack();
     }
@@ -160,9 +164,11 @@ public class PreferencesDialog extends TitleAreaDialog {
      * @param preferences
      * @return
      */
-    private Composite createCategory(TabFolder folder, String category, List<Preference<?>> preferences) {
+    private Composite createCategory(final TabFolder folder, String category, List<Preference<?>> preferences) {
         final Composite c = new Composite(folder, SWT.NONE);
         c.setLayout(new GridLayout(4, false));
+        
+        final List<Label> labels = new ArrayList<Label>();
         
         org.eclipse.swt.widgets.Group current = null;
         for (final Preference<?> e : preferences) {
@@ -174,11 +180,40 @@ public class PreferencesDialog extends TitleAreaDialog {
             } else {
                 final Label l = new Label(current != null ? current : c, SWT.NONE);
                 l.setText(e.getLabel() + ":"); //$NON-NLS-1$
+                labels.add(l);
                 editors.put(e, e.getEditor());
                 editors.get(e).createControl(current != null ? current : c);
                 editors.get(e).setValue(e.getValue());
             }
         }
+
+        // Set equal width on labels
+        ControlListener listener = new ControlAdapter(){
+            
+            /** Call count*/
+            int count = 0;
+            /** Max width*/
+            int maxWidth = 0;
+            
+            @Override public void controlResized(ControlEvent arg0) {
+                maxWidth = Math.max(((Label)arg0.widget).getSize().x, maxWidth);
+                if (++count == labels.size()) {
+                    GridData gridData = new GridData();
+                    gridData.widthHint = maxWidth;
+                    for (Label label : labels) {
+                        label.setLayoutData(gridData);
+                    }
+                    c.layout(true, true);
+                }
+            }
+        };
+        
+        // Attach listener
+        for (Label label : labels) {
+            label.addControlListener(listener);
+        }
+        
+        // Return base
         return c;
     }
 
