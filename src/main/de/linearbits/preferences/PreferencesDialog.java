@@ -104,6 +104,15 @@ public class PreferencesDialog extends TitleAreaDialog {
     }
 
     /**
+     * Adds a new group
+     * @param text
+     */
+    public void addGroup(String text) {
+        if (category == null) { throw new IllegalStateException("Please create a category first"); }
+        this.preferences.get(category).add(new Group(text));
+    }
+    
+    /**
      * Adds a new preference
      * @param preference
      */
@@ -154,12 +163,21 @@ public class PreferencesDialog extends TitleAreaDialog {
     private Composite createCategory(TabFolder folder, String category, List<Preference<?>> preferences) {
         final Composite c = new Composite(folder, SWT.NONE);
         c.setLayout(new GridLayout(4, false));
+        
+        org.eclipse.swt.widgets.Group current = null;
         for (final Preference<?> e : preferences) {
-            final Label l = new Label(c, SWT.NONE);
-            l.setText(e.getLabel() + ":"); //$NON-NLS-1$
-            editors.put(e, e.getEditor());
-            editors.get(e).createControl(c);
-            editors.get(e).setValue(e.getValue());
+            if (e instanceof Group) {
+                current = new org.eclipse.swt.widgets.Group(c, SWT.SHADOW_ETCHED_IN);
+                current.setText(e.getLabel());
+                current.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).span(4, 1).create());
+                current.setLayout(new GridLayout(4, false));
+            } else {
+                final Label l = new Label(current != null ? current : c, SWT.NONE);
+                l.setText(e.getLabel() + ":"); //$NON-NLS-1$
+                editors.put(e, e.getEditor());
+                editors.get(e).createControl(current != null ? current : c);
+                editors.get(e).setValue(e.getValue());
+            }
         }
         return c;
     }
