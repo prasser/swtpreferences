@@ -25,6 +25,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
@@ -78,8 +80,27 @@ public class PreferencesDialog extends TitleAreaDialog {
      * @param title
      * @param description
      */
-    public PreferencesDialog(Shell shell, String title, String description) {
+    public PreferencesDialog(Shell shell, 
+                             String title, 
+                             String description) {
+        this(shell, title, description, false);
+    }
+    
+    /**
+     * Constructor
+     * @param shell
+     * @param title
+     * @param description
+     * @param resizable
+     */
+    public PreferencesDialog(Shell shell, 
+                             String title, 
+                             String description,
+                             boolean resizable) {
         super(shell);
+        if (resizable) {
+            this.setShellStyle(this.getShellStyle() | SWT.RESIZE);
+        }
         this.title = title;
         this.description = description;
         this.shell = shell;
@@ -130,22 +151,6 @@ public class PreferencesDialog extends TitleAreaDialog {
         super.create();
         setTitle(title);
         setMessage(description);
-
-        // Build tabs
-        for (final String category : categories) {
-
-            // Create the tab folder
-            final TabItem tab = new TabItem(folder, SWT.NONE);
-            tab.setText(category);
-            if (images.get(category) != null) {
-                tab.setImage(images.get(category));
-            }
-            final Composite tabC = createCategory(folder, category, preferences.get(category));
-            tab.setControl(tabC);
-        }
-        
-        // Pack the dialog
-        super.getShell().pack();
     }
 
     /**
@@ -216,6 +221,26 @@ public class PreferencesDialog extends TitleAreaDialog {
         return c;
     }
 
+    /**
+     * Returns whether the settings are dirty
+     * @return
+     */
+    private boolean isDirty() {
+        boolean dirty = false;
+        for (Entry<String, List<Preference<?>>> entry : preferences.entrySet()) {
+            for (Preference<?> preference : entry.getValue()) {
+                Editor<?> editor = editors.get(preference);
+                if (editor != null) {
+                    if (!editor.isValid()) {
+                        return false;
+                    }
+                    dirty |= editor.isDirty();
+                }
+            }
+        }
+        return dirty;
+    }
+
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
@@ -242,6 +267,7 @@ public class PreferencesDialog extends TitleAreaDialog {
                 close();
             }
         });
+        ok.setEnabled(isDirty());
     }
 
     @Override
@@ -249,6 +275,29 @@ public class PreferencesDialog extends TitleAreaDialog {
         parent.setLayout(new GridLayout(1, false));
         folder = new TabFolder(parent, SWT.NONE);
         folder.setLayoutData(GridDataFactory.swtDefaults().grab(true, true).indent(0, 0).align(SWT.FILL, SWT.FILL).create());
+
+        // Build tabs
+        for (final String category : categories) {
+
+            // Create the tab folder
+            final TabItem tab = new TabItem(folder, SWT.NONE);
+            tab.setText(category);
+            if (images.get(category) != null) {
+                tab.setImage(images.get(category));
+            }
+            final Composite tabC = createCategory(folder, category, preferences.get(category));
+            tab.setControl(tabC);
+        }
+        
+        // Ugly hack that seems to be needed to achieve a correct layout on Linux/GTK
+        folder.addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent arg0) {
+                folder.layout(true, true);
+                folder.removePaintListener(this);
+            }
+        });
+        
         return parent;
     }
 
@@ -261,30 +310,18 @@ public class PreferencesDialog extends TitleAreaDialog {
             }
         };
     }
-
+    
     @Override
     protected boolean isResizable() {
         return false;
     }
-
+    
     /**
      * Updates the OK button
      */
     void update() {
-        
-        boolean dirty = false;
-        for (Entry<String, List<Preference<?>>> entry : preferences.entrySet()) {
-            for (Preference<?> preference : entry.getValue()) {
-                Editor<?> editor = editors.get(preference);
-                if (editor != null) {
-                    if (!editor.isValid()) {
-                        ok.setEnabled(false);
-                        return;
-                    }
-                    dirty |= editor.isDirty();
-                }
-            }
+        if (ok != null) {
+            ok.setEnabled(isDirty());
         }
-        ok.setEnabled(dirty);
     }
 }
