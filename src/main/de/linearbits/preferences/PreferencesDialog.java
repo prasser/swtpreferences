@@ -1,5 +1,5 @@
 /* ******************************************************************************
- * Copyright (c) 2014 - 2015 Fabian Prasser.
+ * Copyright (c) 2014 - 2016 Fabian Prasser.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -100,7 +100,6 @@ public class PreferencesDialog extends TitleAreaDialog {
      */
     public void addCategory(String label, Image image) {
         if (label == null) { throw new NullPointerException("Label must not be null"); }
-        if (image == null) { throw new NullPointerException("Image must not be null"); }
         this.preferences.put(label, new ArrayList<Preference<?>>());
         this.category = label;
         this.images.put(label, image);
@@ -220,7 +219,9 @@ public class PreferencesDialog extends TitleAreaDialog {
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell.setImages(shell.getImages());
+        if (shell != null) {
+            newShell.setImages(shell.getImages());
+        }
     }
 
     @Override
