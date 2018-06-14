@@ -179,7 +179,7 @@ abstract class Editor<T> {
      * @param parent
      */
     void createUndoButton(Composite parent) {
-        buttonUndo = new Button(parent, SWT.PUSH);
+        buttonUndo = new Button(parent, SWT.FLAT);
         buttonUndo.setImage(Resources.getImageUndo());
         buttonUndo.setLayoutData(GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.TOP).create());
         buttonUndo.setToolTipText(dialog.getConfiguration().getStringUndo());
@@ -196,7 +196,7 @@ abstract class Editor<T> {
      * @param parent
      */
     void createDefaultButton(Composite parent) {
-        buttonDefault = new Button(parent, SWT.PUSH);
+        buttonDefault = new Button(parent, SWT.FLAT);
         buttonDefault.setImage(Resources.getImageDefault());
         buttonDefault.setLayoutData(GridDataFactory.swtDefaults().align(SWT.LEFT, SWT.TOP).create());
         buttonDefault.setToolTipText(dialog.getConfiguration().getStringDefault());
