@@ -1,7 +1,7 @@
 SWT Preferences
 ====
 
-This project provides a simple preferences dialog for SWT/JFace. Why yet another preferences dialog? Because
+This project provides a simple preferences dialog for SWT/JFace. Why yet another preferences dialog? Because it
 is very easy to use and it just works. For alternative implementations you may want to look at 
 JFace's [PreferenceDialog](http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fapi%2Forg%2Feclipse%2Fjface%2Fpreference%2FPreferenceDialog.html)
 or Opal's [PreferenceWindow](http://code.google.com/a/eclipselabs.org/p/opal/wiki/PreferenceWindow).
