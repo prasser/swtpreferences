@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="lib/org.eclipse.core.commands_3.6.2.v20130123-162658.jar:lib/org.eclipse.jface_3.8.102.v20130123-162658.jar:lib/org.eclipse.equinox.common_3.6.100.v20120522-1841.jar:lib/org.eclipse.core.runtime_3.8.0.v20120912-155025.jar:lib/swt-4.2.1-gtk-linux-x86_64.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="de.linearbits.examples,de.linearbits.preferences" source="16" sourcepath="src/main:src/examples" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

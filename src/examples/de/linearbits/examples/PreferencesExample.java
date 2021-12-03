@@ -12,6 +12,7 @@
 package de.linearbits.examples;
 
 import de.linearbits.preferences.PreferenceBoolean;
+import de.linearbits.preferences.PreferenceBooleanNL;
 import de.linearbits.preferences.PreferenceDouble;
 import de.linearbits.preferences.PreferenceInteger;
 import de.linearbits.preferences.PreferenceSelection;
@@ -82,6 +83,11 @@ public class PreferencesExample {
             protected Boolean getValue() { return true; }
             protected void setValue(Object t) { /*(Boolean)t*/}
         });
-        
+
+        window.addPreference(new PreferenceBooleanNL("BooleanPreference without label", false) {
+            protected Boolean getValue() { return true; }
+            protected void setValue(Object t) { /*(Boolean)t*/}
+        });
+
     }
 }
