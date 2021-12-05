@@ -82,6 +82,11 @@ public class PreferencesExample {
             protected Boolean getValue() { return true; }
             protected void setValue(Object t) { /*(Boolean)t*/}
         });
+
+        window.addPreference(new PreferenceBoolean("BooleanPreference with hidden label", false, true) {
+            protected Boolean getValue() { return true; }
+            protected void setValue(Object t) { /*(Boolean)t*/}
+        });
         
     }
 }

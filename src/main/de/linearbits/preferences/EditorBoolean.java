@@ -28,31 +28,43 @@ class EditorBoolean extends Editor<Boolean> {
     /** Widget*/
     private Button checkbox;
 
+    /** Label Visibility*/
+    private Boolean hideLabel;
+
     /**
      * Constructor
      * @param dialog
      */
-    public EditorBoolean(PreferencesDialog dialog, Boolean _default) {
+    public EditorBoolean(PreferencesDialog dialog, Boolean _default, boolean hideLabel ) {
         super(dialog, null, _default);
+        this.hideLabel = hideLabel;
     }
 
     @Override
     void createControl(final Composite parent) {
         checkbox = new Button(parent, SWT.CHECK);
         checkbox.setSelection(false);
-        checkbox.setText(this.getDialog().getConfiguration().getStringNo());
+        if (! hideLabel) {
+            checkbox.setText(this.getDialog().getConfiguration().getStringNo());
+        }else {
+        	checkbox.setText("");
+        }
         checkbox.setLayoutData(GridDataFactory.swtDefaults().grab(true, false).indent(0, 0).align(SWT.FILL, SWT.FILL).create());
         checkbox.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent arg0) {
                 setValid(true);
                 update();
-                if (checkbox.getSelection()) {
-                    checkbox.setText(getDialog().getConfiguration().getStringYes());
-                } else {
-                    checkbox.setText(getDialog().getConfiguration().getStringNo());
-                }
-            }
+                if (! hideLabel) {
+	                if  (checkbox.getSelection()) {
+	                    checkbox.setText(getDialog().getConfiguration().getStringYes());
+	                } else {
+	                    checkbox.setText(getDialog().getConfiguration().getStringNo());
+	                };
+                }else {
+                	checkbox.setText("");	
+                };
+            };
         });
         
         super.createUndoButton(parent);
@@ -83,7 +95,11 @@ class EditorBoolean extends Editor<Boolean> {
     void setValue(Object t) {
         setInitialValue((Boolean) t);
         checkbox.setSelection((Boolean) t);
-        checkbox.setText((Boolean) t ? getDialog().getConfiguration().getStringYes() : getDialog().getConfiguration().getStringNo());
+        if (! hideLabel){
+           checkbox.setText((Boolean) t ? getDialog().getConfiguration().getStringYes() : getDialog().getConfiguration().getStringNo());
+        }else {
+        	checkbox.setText("");
+        }
         super.update();
     }
 }
