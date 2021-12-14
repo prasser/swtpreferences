@@ -60,7 +60,7 @@ class EditorBoolean extends Editor<Boolean> {
                         checkbox.setText(getDialog().getConfiguration().getStringYes());
                     } else {
                         checkbox.setText(getDialog().getConfiguration().getStringNo());
-                    };
+                    }
                 } else {
                     checkbox.setText("");
                 }
