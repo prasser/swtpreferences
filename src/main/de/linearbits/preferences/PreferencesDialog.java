@@ -22,6 +22,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -38,7 +39,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -169,24 +172,41 @@ public class PreferencesDialog extends TitleAreaDialog {
      * @return
      */
     private Composite createCategory(final TabFolder folder, String category, List<Preference<?>> preferences) {
-        final Composite c = new Composite(folder, SWT.NONE);
-        c.setLayout(new GridLayout(4, false));
+        
+        // Create scrolled composite
+        final ScrolledComposite scrolling = new ScrolledComposite(folder, SWT.V_SCROLL );
+        scrolling.setExpandHorizontal(true);
+        scrolling.setExpandVertical(true);
+        
+        // Create composite
+        final Composite composite = new Composite(scrolling, SWT.NONE);
+        scrolling.setContent(composite);
+        composite.setLayout(new GridLayout(4, false));
+        
+        // Only scroll vertically
+        scrolling.addListener(SWT.Resize, new Listener() {
+            @Override
+            public void handleEvent(Event arg0) {
+                int width = scrolling.getClientArea().width;
+                scrolling.setMinSize(composite.computeSize(width, SWT.DEFAULT));
+            }
+          });
         
         final List<Label> labels = new ArrayList<Label>();
         
         org.eclipse.swt.widgets.Group current = null;
         for (final Preference<?> e : preferences) {
             if (e instanceof Group) {
-                current = new org.eclipse.swt.widgets.Group(c, SWT.SHADOW_ETCHED_IN);
+                current = new org.eclipse.swt.widgets.Group(composite, SWT.SHADOW_ETCHED_IN);
                 current.setText(e.getLabel());
                 current.setLayoutData(GridDataFactory.fillDefaults().grab(true,  false).span(4, 1).create());
                 current.setLayout(new GridLayout(4, false));
             } else {
-                final Label l = new Label(current != null ? current : c, SWT.NONE);
+                final Label l = new Label(current != null ? current : composite, SWT.NONE);
                 l.setText(e.getLabel() + ":"); //$NON-NLS-1$
                 labels.add(l);
                 editors.put(e, e.getEditor());
-                editors.get(e).createControl(current != null ? current : c);
+                editors.get(e).createControl(current != null ? current : composite);
                 editors.get(e).setValue(e.getValue());
             }
         }
@@ -207,7 +227,7 @@ public class PreferencesDialog extends TitleAreaDialog {
                     for (Label label : labels) {
                         label.setLayoutData(gridData);
                     }
-                    c.layout(true, true);
+                    composite.layout(true, true);
                 }
             }
         };
@@ -218,7 +238,7 @@ public class PreferencesDialog extends TitleAreaDialog {
         }
         
         // Return base
-        return c;
+        return scrolling;
     }
 
     /**
